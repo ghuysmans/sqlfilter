@@ -15,6 +15,7 @@ rule tokenize = parse
 | ['I''i'] ['S''s'] { IS }
 | ['L''l'] ['I''i'] ['K''k'] ['E''e'] { LIKE }
 | ['R''r'] ['E''e'] ['G''g'] ['E''e'] ['X''x'] ['P''p'] { REGEXP }
+| ['I''i'] ['N''n'] { IN }
 | ['B''b'] ['E''e'] ['T''t'] ['W''w'] ['E''e'] ['E''e'] ['N''n'] { BETWEEN }
 | ['N''n'] ['U''u'] ['L''l'] ['L''l'] { NULL }
 | ['T''t'] ['R''r'] ['U''u'] ['E''e'] { TRUE }
@@ -34,6 +35,7 @@ rule tokenize = parse
 | "<=>" { DOUBLE_ARROW }
 | "<=" { LE }
 | '<' { LT }
+| ',' { COMMA }
 | ['\t' ' ']+ { tokenize lexbuf }
 | eof { EOF }
 

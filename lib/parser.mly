@@ -3,13 +3,13 @@
 %token PLUS MINUS TIMES SLASH DIV MOD
 %token GE GT EQ DOUBLE_ARROW NE LE LT BETWEEN
 %token AND OR XOR NOT TRUE FALSE
-%token LPAR RPAR
-%token IS LIKE REGEXP NULL
+%token LPAR COMMA RPAR
+%token IS LIKE REGEXP IN NULL
 %token SELECT EXISTS
 %nonassoc NOT
 %left OR XOR
 %left AND
-%left GE GT EQ DOUBLE_ARROW NE LE LT IS LIKE REGEXP
+%left GE GT EQ DOUBLE_ARROW NE LE LT IS LIKE REGEXP IN
 %left BETWEEN
 %left PLUS MINUS
 %left TIMES SLASH DIV MOD
@@ -40,6 +40,8 @@
 | LIKE { Ast.Like }
 | REGEXP { Ast.Regexp }
 
+%inline sequence(x): LPAR l=separated_nonempty_list(COMMA, x) RPAR { l }
+
 expr:
 | NULL { Ast.Null }
 | TRUE { Ast.Bool true }
@@ -50,6 +52,7 @@ expr:
 | LPAR e=expr RPAR { e }
 | e1=expr op=bin e2=expr { Ast.Bin (e1, op, e2) }
 | e1=expr op=cmp e2=expr { Ast.Cmp (e1, op, e2) }
+| e=expr IN s=sequence(expr) { Ast.In (e, s) }
 | MINUS e=expr %prec UMINUS { Ast.(Bin (Int 0, Minus, e)) }
 | NOT e=expr { Ast.Not e }
 | e=expr IS NULL { Ast.Is_null e }
