@@ -4,6 +4,8 @@ open Parser
 
 rule tokenize = parse
 | ['0'-'9']+ as n { INT (int_of_string n) }
+| ['S''s'] ['E''e'] ['L''l'] ['E''e'] ['C''c'] ['T''t'] { SELECT }
+| ['E''e'] ['X''x'] ['I''i'] ['S''s'] ['T''t'] ['S''s'] { EXISTS }
 | ['A''a'] ['N''n'] ['D''d'] { AND }
 | ['O''o'] ['R''r'] { OR }
 | ['X''x'] ['O''o'] ['R''r'] { XOR }

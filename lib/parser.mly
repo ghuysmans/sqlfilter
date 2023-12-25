@@ -4,6 +4,7 @@
 %token GE GT EQ NE LE LT
 %token AND OR XOR NOT
 %token LPAR RPAR
+%token SELECT EXISTS
 %nonassoc NOT
 %left OR XOR
 %left AND
