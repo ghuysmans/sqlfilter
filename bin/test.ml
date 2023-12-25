@@ -1,4 +1,8 @@
 open Sqlcond
 
-let _ =
-  Parser.main Lexer.tokenize (Lexing.from_channel stdin)
+let () =
+  read_line () |>
+  Lexing.from_string |>
+  Parser.main Lexer.tokenize |>
+  Ast.show |>
+  print_endline

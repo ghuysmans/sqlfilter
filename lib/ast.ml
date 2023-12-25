@@ -3,6 +3,7 @@ type op =
   | Minus
   | Times
   | Div
+  [@@deriving show {with_path = false}]
 
 type cmp =
   | Ge
@@ -11,6 +12,7 @@ type cmp =
   | Ne
   | Le
   | Lt
+  [@@deriving show {with_path = false}]
 
 type t =
   | Int of int
@@ -18,3 +20,4 @@ type t =
   | Id of string
   | Bin of t * op * t
   | Cmp of t * cmp * t
+  [@@deriving show {with_path = false}]
