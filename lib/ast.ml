@@ -18,10 +18,12 @@ type cmp =
   [@@deriving show {with_path = false}]
 
 type t =
+  | Null
   | Int of int
   | Str of string
   | Id of string
   | Bin of t * op * t
   | Cmp of t * cmp * t
   | Not of t
+  | Is_null of t
   [@@deriving show {with_path = false}]

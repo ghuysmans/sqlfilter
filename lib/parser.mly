@@ -4,11 +4,12 @@
 %token GE GT EQ NE LE LT
 %token AND OR XOR NOT
 %token LPAR RPAR
+%token IS NULL
 %token SELECT EXISTS
 %nonassoc NOT
 %left OR XOR
 %left AND
-%left GE GT EQ NE LE LT
+%left GE GT EQ NE LE LT IS
 %left PLUS MINUS
 %left TIMES DIV
 %nonassoc UMINUS
@@ -34,6 +35,7 @@
 | LT { Ast.Lt }
 
 expr:
+| NULL { Ast.Null }
 | i=INT { Ast.Int i }
 | parts=nonempty_list(STR) { Ast.Str (String.concat "" parts) }
 | x=ID { Ast.Id x }
@@ -42,5 +44,7 @@ expr:
 | e1=expr op=cmp e2=expr { Ast.Cmp (e1, op, e2) }
 | MINUS e=expr %prec UMINUS { Ast.(Bin (Int 0, Minus, e)) }
 | NOT e=expr { Ast.Not e }
+| e=expr IS NULL { Ast.Is_null e }
+| e=expr IS NOT NULL { Ast.(Not (Is_null e)) }
 
 main: e=expr EOF { e }
