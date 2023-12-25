@@ -30,4 +30,5 @@ type t =
   | Cmp of t * cmp * t
   | Not of t
   | Is_null of t
+  | Between of {e: t; low: t; high: t}
   [@@deriving show {with_path = false}]

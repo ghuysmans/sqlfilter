@@ -1,7 +1,7 @@
 %token <int> INT
 %token <string> ID STR
 %token PLUS MINUS TIMES DIV
-%token GE GT EQ DOUBLE_ARROW NE LE LT
+%token GE GT EQ DOUBLE_ARROW NE LE LT BETWEEN
 %token AND OR XOR NOT TRUE FALSE
 %token LPAR RPAR
 %token IS LIKE REGEXP NULL
@@ -10,6 +10,7 @@
 %left OR XOR
 %left AND
 %left GE GT EQ DOUBLE_ARROW NE LE LT IS LIKE REGEXP
+%left BETWEEN
 %left PLUS MINUS
 %left TIMES DIV
 %nonassoc UMINUS
@@ -53,5 +54,7 @@ expr:
 | e=expr IS NOT NULL { Ast.(Not (Is_null e)) }
 | e=expr IS TRUE { Ast.(Cmp (e, Eq, Bool true)) }
 | e=expr IS FALSE { Ast.(Cmp (e, Eq, Bool false)) }
+| e=expr BETWEEN low=expr AND high=expr { Ast.Between {e; low; high} }
+| e=expr NOT BETWEEN low=expr AND high=expr { Ast.(Not (Between {e; low; high})) }
 
 main: e=expr EOF { e }
