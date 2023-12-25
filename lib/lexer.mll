@@ -6,6 +6,7 @@ rule tokenize = parse
 | ['0'-'9']+ as n { INT (int_of_string n) }
 | ['S''s'] ['E''e'] ['L''l'] ['E''e'] ['C''c'] ['T''t'] { SELECT }
 | ['E''e'] ['X''x'] ['I''i'] ['S''s'] ['T''t'] ['S''s'] { EXISTS }
+| ['D''d'] ['I''i'] ['V''v'] { DIV }
 | ['A''a'] ['N''n'] ['D''d'] { AND }
 | ['O''o'] ['R''r'] { OR }
 | ['X''x'] ['O''o'] ['R''r'] { XOR }
@@ -24,7 +25,7 @@ rule tokenize = parse
 | '+' { PLUS }
 | '-' { MINUS }
 | '*' { TIMES }
-| '/' { DIV }
+| '/' { SLASH }
 | ">=" { GE }
 | '>' { GT }
 | '=' { EQ }

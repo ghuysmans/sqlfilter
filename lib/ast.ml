@@ -2,7 +2,8 @@ type op =
   | Plus
   | Minus
   | Times
-  | Div
+  | Float_div
+  | Int_div
   | And
   | Or
   | Xor
