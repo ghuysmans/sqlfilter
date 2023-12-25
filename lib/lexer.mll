@@ -28,7 +28,7 @@ rule tokenize = parse
 | ">=" { GE }
 | '>' { GT }
 | '=' { EQ }
-| "<>" { NE }
+| "<>" | "!=" { NE }
 | "<=>" { DOUBLE_ARROW }
 | "<=" { LE }
 | '<' { LT }
