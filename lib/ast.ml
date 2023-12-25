@@ -34,6 +34,7 @@ type t =
   | Is_null of t
   | Between of {e: t; low: t; high: t}
   | In of t * t list
+  | App of string * t list
   [@@deriving show {with_path = false}]
 
 type order =

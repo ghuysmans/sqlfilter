@@ -63,6 +63,7 @@ expr:
 | e=expr IS FALSE { Ast.(Cmp (e, Eq, Bool false)) }
 | e=expr BETWEEN low=expr AND high=expr { Ast.Between {e; low; high} }
 | e=expr NOT BETWEEN low=expr AND high=expr { Ast.(Not (Between {e; low; high})) }
+| f=ID args=sequence(expr) { Ast.App (f, args) }
 
 ordering_term:
 | e=expr ASC? { e, Ast.Ascending }
