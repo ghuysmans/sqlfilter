@@ -3,6 +3,9 @@ type op =
   | Minus
   | Times
   | Div
+  | And
+  | Or
+  | Xor
   [@@deriving show {with_path = false}]
 
 type cmp =
@@ -20,4 +23,5 @@ type t =
   | Id of string
   | Bin of t * op * t
   | Cmp of t * cmp * t
+  | Not of t
   [@@deriving show {with_path = false}]
