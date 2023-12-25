@@ -7,11 +7,12 @@
 %token IS LIKE REGEXP IN NULL
 %token ASC DESC
 %token SELECT EXISTS
-%nonassoc NOT
-%left OR XOR
+%left OR
+%left XOR
 %left AND
-%left GE GT EQ DOUBLE_ARROW NE LE LT IS LIKE REGEXP IN
-%left BETWEEN
+%nonassoc NOT
+%nonassoc BETWEEN
+%nonassoc GE GT EQ DOUBLE_ARROW NE LE LT IS LIKE REGEXP IN
 %left PLUS MINUS
 %left TIMES SLASH DIV MOD
 %nonassoc UMINUS
