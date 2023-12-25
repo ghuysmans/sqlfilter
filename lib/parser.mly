@@ -2,7 +2,7 @@
 %token <string> ID STR
 %token PLUS MINUS TIMES DIV
 %token GE GT EQ NE LE LT
-%token AND OR XOR NOT
+%token AND OR XOR NOT TRUE FALSE
 %token LPAR RPAR
 %token IS NULL
 %token SELECT EXISTS
@@ -36,6 +36,8 @@
 
 expr:
 | NULL { Ast.Null }
+| TRUE { Ast.Bool true }
+| FALSE { Ast.Bool false }
 | i=INT { Ast.Int i }
 | parts=nonempty_list(STR) { Ast.Str (String.concat "" parts) }
 | x=ID { Ast.Id x }
@@ -46,5 +48,7 @@ expr:
 | NOT e=expr { Ast.Not e }
 | e=expr IS NULL { Ast.Is_null e }
 | e=expr IS NOT NULL { Ast.(Not (Is_null e)) }
+| e=expr IS TRUE { Ast.(Cmp (e, Eq, Bool true)) }
+| e=expr IS FALSE { Ast.(Cmp (e, Eq, Bool false)) }
 
 main: e=expr EOF { e }

@@ -12,6 +12,8 @@ rule tokenize = parse
 | ['N''n'] ['O''o'] ['T''t'] { NOT }
 | ['I''i'] ['S''s'] { IS }
 | ['N''n'] ['U''u'] ['L''l'] ['L''l'] { NULL }
+| ['T''t'] ['R''r'] ['U''u'] ['E''e'] { TRUE }
+| ['F''f'] ['A''a'] ['L''l'] ['S''s'] ['E''e'] { FALSE }
 | ['A'-'Z' 'a'-'z' '_']+ as x { ID x }
 | '\'' { string (Buffer.create 50) lexbuf }
 | '(' { LPAR }

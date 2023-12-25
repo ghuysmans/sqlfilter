@@ -19,6 +19,7 @@ type cmp =
 
 type t =
   | Null
+  | Bool of bool
   | Int of int
   | Str of string
   | Id of string
