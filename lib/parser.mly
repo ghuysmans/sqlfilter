@@ -1,7 +1,7 @@
 %token <int> INT
 %token <string> ID STR
 %token PLUS MINUS TIMES DIV
-%token GE GT EQ NE LE LT
+%token GE GT EQ DOUBLE_ARROW NE LE LT
 %token AND OR XOR NOT TRUE FALSE
 %token LPAR RPAR
 %token IS LIKE REGEXP NULL
@@ -9,7 +9,7 @@
 %nonassoc NOT
 %left OR XOR
 %left AND
-%left GE GT EQ NE LE LT IS LIKE REGEXP
+%left GE GT EQ DOUBLE_ARROW NE LE LT IS LIKE REGEXP
 %left PLUS MINUS
 %left TIMES DIV
 %nonassoc UMINUS
@@ -30,6 +30,7 @@
 | GE { Ast.Ge }
 | GT { Ast.Gt }
 | EQ { Ast.Eq }
+| DOUBLE_ARROW { Ast.Is_not_distinct_from }
 | NE { Ast.Ne }
 | LE { Ast.Le }
 | LT { Ast.Lt }

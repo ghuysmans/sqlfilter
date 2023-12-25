@@ -28,6 +28,7 @@ rule tokenize = parse
 | '>' { GT }
 | '=' { EQ }
 | "<>" { NE }
+| "<=>" { DOUBLE_ARROW }
 | "<=" { LE }
 | '<' { LT }
 | ['\t' ' ']+ { tokenize lexbuf }

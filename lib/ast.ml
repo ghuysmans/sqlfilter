@@ -12,6 +12,7 @@ type cmp =
   | Ge
   | Gt
   | Eq
+  | Is_not_distinct_from
   | Ne
   | Le
   | Lt
