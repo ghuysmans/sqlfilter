@@ -35,3 +35,15 @@ type t =
   | Between of {e: t; low: t; high: t}
   | In of t * t list
   [@@deriving show {with_path = false}]
+
+type order =
+  | Ascending
+  | Descending
+
+let arrow_of_order = function
+  | Ascending -> "↑"
+  | Descending -> "↓"
+
+type ordering_term = t * order
+
+type order_by = ordering_term list

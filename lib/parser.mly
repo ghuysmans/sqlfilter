@@ -5,6 +5,7 @@
 %token AND OR XOR NOT TRUE FALSE
 %token LPAR COMMA RPAR
 %token IS LIKE REGEXP IN NULL
+%token ASC DESC
 %token SELECT EXISTS
 %nonassoc NOT
 %left OR XOR
@@ -16,6 +17,7 @@
 %nonassoc UMINUS
 %token EOF
 %start <Ast.t> main
+%start <Ast.order_by> order_by
 %%
 
 %inline bin:
@@ -62,4 +64,11 @@ expr:
 | e=expr BETWEEN low=expr AND high=expr { Ast.Between {e; low; high} }
 | e=expr NOT BETWEEN low=expr AND high=expr { Ast.(Not (Between {e; low; high})) }
 
+ordering_term:
+| e=expr ASC? { e, Ast.Ascending }
+| e=expr DESC { e, Ast.Descending }
+
+sort: l=separated_nonempty_list(COMMA, ordering_term) { l }
+
 main: e=expr EOF { e }
+order_by: s=sort EOF { s }
