@@ -11,6 +11,8 @@ rule tokenize = parse
 | ['X''x'] ['O''o'] ['R''r'] { XOR }
 | ['N''n'] ['O''o'] ['T''t'] { NOT }
 | ['I''i'] ['S''s'] { IS }
+| ['L''l'] ['I''i'] ['K''k'] ['E''e'] { LIKE }
+| ['R''r'] ['E''e'] ['G''g'] ['E''e'] ['X''x'] ['P''p'] { REGEXP }
 | ['N''n'] ['U''u'] ['L''l'] ['L''l'] { NULL }
 | ['T''t'] ['R''r'] ['U''u'] ['E''e'] { TRUE }
 | ['F''f'] ['A''a'] ['L''l'] ['S''s'] ['E''e'] { FALSE }

@@ -15,6 +15,8 @@ type cmp =
   | Ne
   | Le
   | Lt
+  | Like
+  | Regexp
   [@@deriving show {with_path = false}]
 
 type t =

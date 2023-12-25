@@ -4,12 +4,12 @@
 %token GE GT EQ NE LE LT
 %token AND OR XOR NOT TRUE FALSE
 %token LPAR RPAR
-%token IS NULL
+%token IS LIKE REGEXP NULL
 %token SELECT EXISTS
 %nonassoc NOT
 %left OR XOR
 %left AND
-%left GE GT EQ NE LE LT IS
+%left GE GT EQ NE LE LT IS LIKE REGEXP
 %left PLUS MINUS
 %left TIMES DIV
 %nonassoc UMINUS
@@ -33,6 +33,8 @@
 | NE { Ast.Ne }
 | LE { Ast.Le }
 | LT { Ast.Lt }
+| LIKE { Ast.Like }
+| REGEXP { Ast.Regexp }
 
 expr:
 | NULL { Ast.Null }
