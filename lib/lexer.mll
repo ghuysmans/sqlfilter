@@ -12,6 +12,12 @@ rule tokenize = parse
 | '-' { MINUS }
 | '*' { TIMES }
 | '/' { DIV }
+| ">=" { GE }
+| '>' { GT }
+| '=' { EQ }
+| "<>" { NE }
+| "<=" { LE }
+| '<' { LT }
 | eof { EOF }
 
 and string buf = parse
