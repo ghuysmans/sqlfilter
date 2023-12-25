@@ -1,0 +1,15 @@
+(executable (name str) (libraries sqlcond))
+(rule
+ (with-stdout-to mysql-string-literals.out
+ (with-stdin-from mysql-string-literals.sql
+ (run ./str.exe))))
+(rule
+ (alias runtest)
+ (action (diff mysql-string-literals.exp mysql-string-literals.out)))
+(rule
+ (with-stdout-to mysql-string-concat.out
+ (with-stdin-from mysql-string-concat.sql
+ (run ./str.exe))))
+(rule
+ (alias runtest)
+ (action (diff mysql-string-concat.exp mysql-string-concat.out)))

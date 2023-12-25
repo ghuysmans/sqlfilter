@@ -29,4 +29,16 @@ rule tokenize = parse
 
 and string buf = parse
 | "''" { Buffer.add_char buf '\''; string buf lexbuf }
+| "\\0" { Buffer.add_char buf '\000'; string buf lexbuf }
+| "\\'" { Buffer.add_char buf '\''; string buf lexbuf }
+| "\\b" { Buffer.add_char buf '\b'; string buf lexbuf }
+| "\\n" { Buffer.add_char buf '\n'; string buf lexbuf }
+| "\\r" { Buffer.add_char buf '\r'; string buf lexbuf }
+| "\\t" { Buffer.add_char buf '\t'; string buf lexbuf }
+| "\\Z" { Buffer.add_char buf '\026'; string buf lexbuf }
+| "\\\\" { Buffer.add_char buf '\\'; string buf lexbuf }
+| "\\%" { Buffer.add_string buf "\\%"; string buf lexbuf }
+| "\\_" { Buffer.add_string buf "\\_"; string buf lexbuf }
+| '\\' (_ as c) { Buffer.add_char buf c; string buf lexbuf }
 | '\'' { STR (Buffer.contents buf) }
+| _ as c { Buffer.add_char buf c; string buf lexbuf }

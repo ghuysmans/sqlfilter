@@ -35,7 +35,7 @@
 
 expr:
 | i=INT { Ast.Int i }
-| s=STR { Ast.Str s }
+| parts=nonempty_list(STR) { Ast.Str (String.concat "" parts) }
 | x=ID { Ast.Id x }
 | LPAR e=expr RPAR { e }
 | e1=expr op=bin e2=expr { Ast.Bin (e1, op, e2) }
