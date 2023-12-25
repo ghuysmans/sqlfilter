@@ -7,6 +7,7 @@ rule tokenize = parse
 | ['S''s'] ['E''e'] ['L''l'] ['E''e'] ['C''c'] ['T''t'] { SELECT }
 | ['E''e'] ['X''x'] ['I''i'] ['S''s'] ['T''t'] ['S''s'] { EXISTS }
 | ['D''d'] ['I''i'] ['V''v'] { DIV }
+| '%' | ['M''m'] ['O''o'] ['D''d'] { MOD }
 | ['A''a'] ['N''n'] ['D''d'] { AND }
 | ['O''o'] ['R''r'] { OR }
 | ['X''x'] ['O''o'] ['R''r'] { XOR }

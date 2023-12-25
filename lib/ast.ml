@@ -4,6 +4,7 @@ type op =
   | Times
   | Float_div
   | Int_div
+  | Mod
   | And
   | Or
   | Xor

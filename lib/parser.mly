@@ -1,6 +1,6 @@
 %token <int> INT
 %token <string> ID STR
-%token PLUS MINUS TIMES SLASH DIV
+%token PLUS MINUS TIMES SLASH DIV MOD
 %token GE GT EQ DOUBLE_ARROW NE LE LT BETWEEN
 %token AND OR XOR NOT TRUE FALSE
 %token LPAR RPAR
@@ -12,7 +12,7 @@
 %left GE GT EQ DOUBLE_ARROW NE LE LT IS LIKE REGEXP
 %left BETWEEN
 %left PLUS MINUS
-%left TIMES SLASH DIV
+%left TIMES SLASH DIV MOD
 %nonassoc UMINUS
 %token EOF
 %start <Ast.t> main
@@ -24,6 +24,7 @@
 | TIMES { Ast.Times }
 | SLASH { Ast.Float_div }
 | DIV { Ast.Int_div }
+| MOD { Ast.Mod }
 | AND { Ast.And }
 | OR { Ast.Or }
 | XOR { Ast.Xor }
