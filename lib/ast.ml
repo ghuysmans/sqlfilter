@@ -57,6 +57,20 @@ type 'h t =
   | In of 'h t * 'h t list
   | App of string * 'h t list
 
+let compute ( *? ) z =
+  let rec f : type h. h t -> int = function
+    | Parameter | Null | Bool _ | Int _ | Str _ | Id _ -> z
+    | Bin (l, _, r) | Cmp (l, _, r) -> 1 + f l *? f r
+    | Not t | Is_null t -> 1 + f t
+    | Between {e; low; high} -> 1 + f e *? f low *? f high
+    | In (t, l) -> 1 + List.fold_left (fun acc t -> acc *? f t) 0 (t :: l)
+    | App (_, l) -> 1 + List.fold_left (fun acc t -> acc *? f t) 0 l
+  in
+  f
+
+let height t = compute max 0 t
+let nodes t = compute (+) 1 t
+
 (* TODO benchmark, then fill a Buffer.t? *)
 let rec to_sql : type h. h t -> string = function
   | Parameter -> "?"
