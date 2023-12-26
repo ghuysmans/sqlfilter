@@ -57,3 +57,24 @@ and string buf = parse
 | '\\' (_ as c) { Buffer.add_char buf c; string buf lexbuf }
 | '\'' { STR (Buffer.contents buf) }
 | _ as c { Buffer.add_char buf c; string buf lexbuf }
+
+and quote buf = parse
+| '\'' { Buffer.add_string buf "''"; quote buf lexbuf }
+| '\000' { Buffer.add_string buf "\\0"; quote buf lexbuf }
+| '\b' { Buffer.add_string buf "\\b"; quote buf lexbuf }
+| '\n' { Buffer.add_string buf "\\n"; quote buf lexbuf }
+| '\r' { Buffer.add_string buf "\\r"; quote buf lexbuf }
+| '\t' { Buffer.add_string buf "\\t"; quote buf lexbuf }
+| '\026' { Buffer.add_string buf "\\Z"; quote buf lexbuf }
+| "\\%" { Buffer.add_string buf "\\%"; quote buf lexbuf }
+| "\\_" { Buffer.add_string buf "\\_"; quote buf lexbuf }
+| '\\' { Buffer.add_string buf "\\\\"; quote buf lexbuf }
+| _ as c { Buffer.add_char buf c; quote buf lexbuf }
+| eof { Buffer.add_char buf '\''; Buffer.contents buf }
+
+{
+let quote ?(size=50) s =
+  let buf = Buffer.create size in
+  Buffer.add_char buf '\'';
+  quote buf (Lexing.from_string s)
+}

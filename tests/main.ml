@@ -10,7 +10,15 @@ let test ~expected s =
   if parse s <> expected then (
     prerr_endline s;
     exit 1
-  )
+  );
+  match expected with
+  | Error () -> ()
+  | Ok t ->
+    let sql = Ast.to_sql t in
+    if parse sql <> expected then (
+      prerr_endline s;
+      exit 2
+    )
 
 let () =
   List.iter (fun (input, expected) -> test ~expected input) [
@@ -23,6 +31,9 @@ let () =
     {|'\'hello'|}, Ok (Str "'hello");
     {|'This\nIs\nFour\nLines'|}, Ok (Str "This\nIs\nFour\nLines");
     {|'disappearing\ backslash'|}, Ok (Str "disappearing backslash");
+
+    {|'\\'|}, Ok (Str {|\|});
+    {|'\_'|}, Ok (Str {|\_|});
 
     (* left associativity *)
     "0 BETWEEN 0 AND 0 AND 0", Ok (Bin (
