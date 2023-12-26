@@ -1,0 +1,12 @@
+%token <int> INT
+%token <string> ID STR
+%token PLUS MINUS TIMES SLASH DIV MOD
+%token GE GT EQ DOUBLE_ARROW NE LE LT BETWEEN
+%token AND OR XOR NOT TRUE FALSE
+%token LPAR COMMA RPAR
+%token IS LIKE REGEXP IN NULL
+%token ASC DESC
+%token PARAM
+%token SELECT EXISTS
+%token EOF
+%%

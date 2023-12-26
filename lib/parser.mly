@@ -1,12 +1,3 @@
-%token <int> INT
-%token <string> ID STR
-%token PLUS MINUS TIMES SLASH DIV MOD
-%token GE GT EQ DOUBLE_ARROW NE LE LT BETWEEN
-%token AND OR XOR NOT TRUE FALSE
-%token LPAR COMMA RPAR
-%token IS LIKE REGEXP IN NULL
-%token ASC DESC
-%token SELECT EXISTS
 %left OR
 %left XOR
 %left AND
@@ -15,9 +6,6 @@
 %left PLUS MINUS
 %left TIMES SLASH DIV MOD
 %nonassoc UMINUS
-%token EOF
-%start <Ast.t> main
-%start <Ast.order_by> order_by
 %%
 
 %inline bin:
@@ -46,7 +34,7 @@
 
 %inline sequence(x): LPAR l=separated_nonempty_list(COMMA, x) RPAR { l }
 
-expr2:
+%public expr2:
 | NULL { Ast.Null }
 | TRUE { Ast.Bool true }
 | FALSE { Ast.Bool false }
@@ -65,7 +53,7 @@ expr2:
 | e=expr2 IS FALSE { Ast.(Cmp (e, Eq, Bool false)) }
 | f=ID args=sequence(expr) { Ast.App (f, args) }
 
-expr:
+%public expr:
 | e1=expr op=logical e2=expr { Ast.Bin (e1, op, e2) }
 | e=expr2 BETWEEN low=expr2 AND high=expr2 { Ast.Between {e; low; high} }
 | e=expr2 NOT BETWEEN low=expr2 AND high=expr2 { Ast.(Not (Between {e; low; high})) }
@@ -75,7 +63,4 @@ ordering_term:
 | e=expr ASC? { e, Ast.Ascending }
 | e=expr DESC { e, Ast.Descending }
 
-sort: l=separated_nonempty_list(COMMA, ordering_term) { l }
-
-main: e=expr EOF { e }
-order_by: s=sort EOF { s }
+%public sort: l=separated_nonempty_list(COMMA, ordering_term) { l }

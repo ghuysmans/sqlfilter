@@ -8,7 +8,6 @@ type op =
   | And
   | Or
   | Xor
-  [@@deriving show {with_path = false}]
 
 type cmp =
   | Ge
@@ -20,22 +19,21 @@ type cmp =
   | Lt
   | Like
   | Regexp
-  [@@deriving show {with_path = false}]
 
-type t =
+type 'h t =
+  | Parameter : [`Parameterized] t
   | Null
   | Bool of bool
   | Int of int
   | Str of string
   | Id of string
-  | Bin of t * op * t
-  | Cmp of t * cmp * t
-  | Not of t
-  | Is_null of t
-  | Between of {e: t; low: t; high: t}
-  | In of t * t list
-  | App of string * t list
-  [@@deriving show {with_path = false}]
+  | Bin of 'h t * op * 'h t
+  | Cmp of 'h t * cmp * 'h t
+  | Not of 'h t
+  | Is_null of 'h t
+  | Between of {e: 'h t; low: 'h t; high: 'h t}
+  | In of 'h t * 'h t list
+  | App of string * 'h t list
 
 type order =
   | Ascending
@@ -45,6 +43,6 @@ let arrow_of_order = function
   | Ascending -> "↑"
   | Descending -> "↓"
 
-type ordering_term = t * order
+type 'h ordering_term = 'h t * order
 
-type order_by = ordering_term list
+type 'h order_by = 'h ordering_term list

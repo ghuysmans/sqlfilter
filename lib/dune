@@ -1,3 +1,11 @@
 (ocamllex (modules lexer))
-(menhir (modules parser))
-(library (name sqlcond) (preprocess (pps ppx_deriving.show)))
+(menhir (modules tokens) (flags --only-tokens))
+(menhir
+ (merge_into parser)
+ (modules tokens parser strict)
+ (flags --external-tokens Tokens))
+(menhir
+ (merge_into with_parameters)
+ (modules tokens parser with_parameters)
+ (flags --external-tokens Tokens))
+(library (name sqlcond))

@@ -1,5 +1,5 @@
 {
-open Parser
+open Tokens
 }
 
 rule tokenize = parse
@@ -38,6 +38,7 @@ rule tokenize = parse
 | "<=" { LE }
 | '<' { LT }
 | ',' { COMMA }
+| '?' { PARAM }
 | ['\t' ' ']+ { tokenize lexbuf }
 | eof { EOF }
 
