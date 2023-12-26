@@ -2,7 +2,7 @@ open Sqlcond
 
 let parse s =
   try
-    Ok (Parser.main Lexer.tokenize (Lexing.from_string s))
+    Ok (Parser.where Lexer.tokenize (Lexing.from_string s))
   with _ ->
     Error ()
 
