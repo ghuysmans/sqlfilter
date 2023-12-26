@@ -32,4 +32,19 @@ let () =
     ));
     (* inconsistent behavior between MySQL and SQLite *)
     "1 BETWEEN 0 AND 2 BETWEEN 0 AND 1", Error ();
+
+    (* see https://valentin.willscher.de/posts/sql-api/ *)
+    "(material = 'steel' AND weight BETWEEN 10 AND 20) OR (material = 'carbon' AND weight BETWEEN 5 AND 10)", Ok (Bin (
+      Bin (
+        Cmp (Id "material", Eq, Str "steel"),
+        And,
+        Between {e = Id "weight"; low = Int 10; high = Int 20}
+      ),
+      Or,
+      Bin (
+        Cmp (Id "material", Eq, Str "carbon"),
+        And,
+        Between {e = Id "weight"; low = Int 5; high = Int 10}
+      )
+    ));
   ]
