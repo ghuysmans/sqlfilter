@@ -71,6 +71,18 @@ let compute ( *? ) z =
 let height t = compute max 0 t
 let nodes t = compute (+) 1 t
 
+let iter f =
+  let rec g : type h. h t -> unit = function
+    | Parameter | Null | Bool _ | Int _ | Str _ -> ()
+    | Id x -> f (`Id (String.lowercase_ascii x))
+    | Bin (l, _, r) | Cmp (l, _, r) -> g l; g r
+    | Not t | Is_null t -> g t
+    | Between {e; low; high} -> g e; g low; g high
+    | In (t, l) -> List.iter g (t :: l)
+    | App (fn, l) -> f (`Fun (String.lowercase_ascii fn)); List.iter g l
+  in
+  g
+
 (* TODO benchmark, then fill a Buffer.t? *)
 let rec to_sql : type h. h t -> string = function
   | Parameter -> "?"
