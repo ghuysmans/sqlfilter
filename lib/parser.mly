@@ -11,7 +11,6 @@
 %left XOR
 %left AND
 %nonassoc NOT
-%nonassoc BETWEEN
 %nonassoc GE GT EQ DOUBLE_ARROW NE LE LT IS LIKE REGEXP IN
 %left PLUS MINUS
 %left TIMES SLASH DIV MOD
@@ -28,6 +27,8 @@
 | SLASH { Ast.Float_div }
 | DIV { Ast.Int_div }
 | MOD { Ast.Mod }
+
+%inline logical:
 | AND { Ast.And }
 | OR { Ast.Or }
 | XOR { Ast.Xor }
@@ -45,7 +46,7 @@
 
 %inline sequence(x): LPAR l=separated_nonempty_list(COMMA, x) RPAR { l }
 
-expr:
+expr2:
 | NULL { Ast.Null }
 | TRUE { Ast.Bool true }
 | FALSE { Ast.Bool false }
@@ -53,18 +54,22 @@ expr:
 | parts=nonempty_list(STR) { Ast.Str (String.concat "" parts) }
 | x=ID { Ast.Id x }
 | LPAR e=expr RPAR { e }
-| e1=expr op=bin e2=expr { Ast.Bin (e1, op, e2) }
-| e1=expr op=cmp e2=expr { Ast.Cmp (e1, op, e2) }
-| e=expr IN s=sequence(expr) { Ast.In (e, s) }
-| MINUS e=expr %prec UMINUS { Ast.(Bin (Int 0, Minus, e)) }
-| NOT e=expr { Ast.Not e }
-| e=expr IS NULL { Ast.Is_null e }
-| e=expr IS NOT NULL { Ast.(Not (Is_null e)) }
-| e=expr IS TRUE { Ast.(Cmp (e, Eq, Bool true)) }
-| e=expr IS FALSE { Ast.(Cmp (e, Eq, Bool false)) }
-| e=expr BETWEEN low=expr AND high=expr { Ast.Between {e; low; high} }
-| e=expr NOT BETWEEN low=expr AND high=expr { Ast.(Not (Between {e; low; high})) }
+| e1=expr2 op=bin e2=expr2 { Ast.Bin (e1, op, e2) }
+| e1=expr2 op=cmp e2=expr2 { Ast.Cmp (e1, op, e2) }
+| e=expr2 IN s=sequence(expr) { Ast.In (e, s) }
+| MINUS e=expr2 %prec UMINUS { Ast.(Bin (Int 0, Minus, e)) }
+| NOT e=expr2 { Ast.Not e }
+| e=expr2 IS NULL { Ast.Is_null e }
+| e=expr2 IS NOT NULL { Ast.(Not (Is_null e)) }
+| e=expr2 IS TRUE { Ast.(Cmp (e, Eq, Bool true)) }
+| e=expr2 IS FALSE { Ast.(Cmp (e, Eq, Bool false)) }
 | f=ID args=sequence(expr) { Ast.App (f, args) }
+
+expr:
+| e1=expr op=logical e2=expr { Ast.Bin (e1, op, e2) }
+| e=expr2 BETWEEN low=expr2 AND high=expr2 { Ast.Between {e; low; high} }
+| e=expr2 NOT BETWEEN low=expr2 AND high=expr2 { Ast.(Not (Between {e; low; high})) }
+| e=expr2 { e }
 
 ordering_term:
 | e=expr ASC? { e, Ast.Ascending }
