@@ -1,7 +1,0 @@
-'hello'
-'"hello"'
-'""hello""'
-'hel''lo'
-'\'hello'
-'This\nIs\nFour\nLines'
-'disappearing\ backslash'
