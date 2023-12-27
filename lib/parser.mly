@@ -32,7 +32,7 @@
 | LIKE { Ast.Like }
 | REGEXP { Ast.Regexp }
 
-%inline sequence(x): LPAR l=separated_nonempty_list(COMMA, x) RPAR { l }
+%inline parseq(x): LPAR l=separated_nonempty_list(COMMA, x) RPAR { l }
 
 %public expr2:
 | NULL { Ast.Null }
@@ -44,14 +44,14 @@
 | LPAR e=expr RPAR { e }
 | e1=expr2 op=bin e2=expr2 { Ast.Bin (e1, op, e2) }
 | e1=expr2 op=cmp e2=expr2 { Ast.Cmp (e1, op, e2) }
-| e=expr2 IN s=sequence(expr) { Ast.In (e, s) }
+| e=expr2 IN s=parseq(expr) { Ast.In (e, s) }
 | MINUS e=expr2 %prec UMINUS { Ast.(Bin (Int 0, Minus, e)) }
 | NOT e=expr2 { Ast.Not e }
 | e=expr2 IS NULL { Ast.Is_null e }
 | e=expr2 IS NOT NULL { Ast.(Not (Is_null e)) }
 | e=expr2 IS TRUE { Ast.(Cmp (e, Eq, Bool true)) }
 | e=expr2 IS FALSE { Ast.(Cmp (e, Eq, Bool false)) }
-| f=ID args=sequence(expr) { Ast.App (f, args) }
+| f=ID args=parseq(expr) { Ast.App (f, args) }
 
 %public expr:
 | e1=expr op=logical e2=expr { Ast.Bin (e1, op, e2) }
