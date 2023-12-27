@@ -7,6 +7,6 @@
 %token IS LIKE REGEXP IN NULL
 %token ASC DESC
 %token PARAM
-%token SELECT EXISTS
+%token SELECT AS FROM WHERE ORDER BY SEMI EXISTS
 %token EOF
 %%

@@ -1,9 +1,6 @@
 open Sqlcond
 
-let () =
+let _ =
   read_line () |>
   Lexing.from_string |>
-  With_parameters.order_by Lexer.tokenize |>
-  List.iter (fun (e, o) ->
-    print_endline Ast.(arrow_of_order o ^ " " ^ to_sql e)
-  )
+  With_parameters.main Lexer.tokenize

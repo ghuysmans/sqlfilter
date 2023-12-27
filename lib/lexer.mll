@@ -5,6 +5,11 @@ open Tokens
 rule tokenize = parse
 | ['0'-'9']+ as n { INT (int_of_string n) }
 | ['S''s'] ['E''e'] ['L''l'] ['E''e'] ['C''c'] ['T''t'] { SELECT }
+| ['A''a'] ['S''s'] { AS }
+| ['F''f'] ['R''r'] ['O''o'] ['M''m'] { FROM }
+| ['W''w'] ['H''h'] ['E''e'] ['R''r'] ['E''e'] { WHERE }
+| ['O''o'] ['R''r'] ['D''d'] ['E''e'] ['R''r'] { ORDER }
+| ['B''b'] ['Y''y'] { BY }
 | ['E''e'] ['X''x'] ['I''i'] ['S''s'] ['T''t'] ['S''s'] { EXISTS }
 | ['D''d'] ['I''i'] ['V''v'] { DIV }
 | '%' | ['M''m'] ['O''o'] ['D''d'] { MOD }
@@ -38,6 +43,7 @@ rule tokenize = parse
 | "<=" { LE }
 | '<' { LT }
 | ',' { COMMA }
+| ';' { SEMI }
 | '?' { PARAM }
 | ['\t' ' ']+ { tokenize lexbuf }
 | eof { EOF }

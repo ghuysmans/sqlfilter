@@ -64,3 +64,16 @@ ordering_term:
 | e=expr DESC { e, Ast.Descending }
 
 %public sort: l=separated_nonempty_list(COMMA, ordering_term) { l }
+
+col:
+| e=expr a=preceded(AS?, ID)? { Ast.Column (e, a) }
+| TIMES { Ast.Star }
+cond: WHERE c=expr { c }
+ord: ORDER BY o=sort { o } | { [] }
+
+%public select:
+| SELECT p=separated_nonempty_list(COMMA, col)
+  FROM t=ID
+  c=cond?
+  o=ord
+  SEMI? { p, t, c, o }

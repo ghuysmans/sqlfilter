@@ -59,6 +59,10 @@ type 'h t =
   | In of 'h t * 'h t list
   | App of string * 'h t list
 
+type 'h col =
+  | Column of 'h t * string option
+  | Star
+
 let compute ( *? ) z =
   let rec f : type h. h t -> int = function
     | Parameter | Null | Bool _ | Int _ | Str _ | Id _ -> z
