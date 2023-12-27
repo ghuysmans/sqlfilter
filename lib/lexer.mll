@@ -46,6 +46,7 @@ rule tokenize = parse
 | ';' { SEMI }
 | '?' { PARAM }
 | ['\t' ' ']+ { tokenize lexbuf }
+| '\n' { Lexing.new_line lexbuf; tokenize lexbuf }
 | eof { EOF }
 
 and string buf = parse
