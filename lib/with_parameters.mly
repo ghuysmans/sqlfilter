@@ -1,5 +1,5 @@
-%start <[`Parameterized] Ast.t> where
-%start <[`Parameterized] Ast.order_by> order_by
+%start <Ast.p Ast.t> where
+%start <Ast.p Ast.order_by> order_by
 %%
 %public expr2:
 | PARAM { Ast.Parameter }

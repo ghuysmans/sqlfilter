@@ -42,8 +42,10 @@ let string_of_cmp = function
   | Like -> "LIKE"
   | Regexp -> "REGEXP"
 
+type p = [`Parameterized]
+
 type 'h t =
-  | Parameter : [`Parameterized] t
+  | Parameter : p t
   | Null
   | Bool of bool
   | Int of int
