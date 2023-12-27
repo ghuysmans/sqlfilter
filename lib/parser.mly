@@ -72,8 +72,8 @@ cond: WHERE c=expr { c }
 ord: ORDER BY o=sort { o } | { [] }
 
 %public select:
-| SELECT p=separated_nonempty_list(COMMA, col)
-  FROM t=ID
-  c=cond?
-  o=ord
-  SEMI? { p, t, c, o }
+| SELECT columns=separated_nonempty_list(COMMA, col)
+  FROM table=ID
+  where=cond?
+  order_by=ord
+  SEMI? { Ast.{columns; table; where; order_by} }

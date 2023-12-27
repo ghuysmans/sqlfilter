@@ -129,6 +129,26 @@ type 'h ordering_term = 'h t * order
 
 type 'h order_by = 'h ordering_term list
 
-let to_sql_order_by l =
+let order_by_to_sql l =
   List.map (fun (t, o) -> to_sql t ^ " " ^ string_of_order o) l |>
   String.concat ", "
+
+type 'h select = {
+  columns: 'h col list;
+  table: string;
+  where: 'h t option;
+  order_by: 'h order_by;
+}
+
+let col_to_sql = function
+  | Column (t, None) -> to_sql t
+  | Column (t, Some a) -> to_sql t ^ " " ^ a
+  | Star -> "*"
+
+let select_to_sql {columns; table; where; order_by} =
+  "SELECT " ^ String.concat ", " (List.map col_to_sql columns) ^
+  " FROM " ^ table ^
+  Option.(value ~default:"" (map (fun t -> " WHERE " ^ to_sql t) where)) ^
+  match order_by with
+  | [] -> ""
+  | _ -> " ORDER BY " ^ order_by_to_sql order_by
